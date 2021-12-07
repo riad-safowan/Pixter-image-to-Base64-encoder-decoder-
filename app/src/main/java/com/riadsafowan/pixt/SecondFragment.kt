@@ -42,12 +42,12 @@ class SecondFragment : Fragment() {
             val clipboard =
                 activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val item = clipboard.primaryClip?.getItemAt(0)?.text
-            binding.editText.setText(item)
+//            binding.editText.setText(item)
 
 //            val clipData = ClipData.newPlainText("image", null)
 //            clipboard.setPrimaryClip(clipData)
 
-            val imageBytes = Base64.decode(binding.editText.text.toString(), Base64.DEFAULT)
+            val imageBytes = Base64.decode(item.toString(), Base64.DEFAULT)
             val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
             binding.imageView.setImageBitmap(decodedImage)
         }

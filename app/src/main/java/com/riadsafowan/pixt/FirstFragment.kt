@@ -46,8 +46,7 @@ class FirstFragment : Fragment() {
 
         (activity as AppCompatActivity).supportActionBar?.title = "Image To Text"
 
-        binding.copyButton.visibility = View.INVISIBLE
-        binding.encodeButton.visibility = View.INVISIBLE
+        binding.encodeAndCopy.visibility = View.INVISIBLE
         return binding.root
     }
 
@@ -55,7 +54,7 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var resultLauncher =
+        val resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
 
@@ -65,7 +64,7 @@ class FirstFragment : Fragment() {
                     Glide.with(requireContext())
                         .load(imageUri)
                         .into(binding.imageView)
-                    binding.encodeButton.visibility = View.VISIBLE
+                    binding.encodeAndCopy.visibility = View.VISIBLE
                 }
             }
 
@@ -84,15 +83,8 @@ class FirstFragment : Fragment() {
         binding.next.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
-        binding.copyButton.setOnClickListener {
-            val clipBoard =
-                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clipData = ClipData.newPlainText("image", imageString)
-            clipBoard.setPrimaryClip(clipData)
-            Toast.makeText(requireContext(), "copied", Toast.LENGTH_SHORT).show()
-        }
 
-        binding.encodeButton.setOnClickListener {
+        binding.encodeAndCopy.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
             CoroutineScope(Default).launch {
 
@@ -104,23 +96,30 @@ class FirstFragment : Fragment() {
                     val bitmap =
                         MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
                     val baos = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos)
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                     val byteArray = baos.toByteArray()
-                    imageString = Base64.encodeToString(byteArray, Base64.CRLF)
+                    imageString = Base64.encodeToString(byteArray, Base64.DEFAULT)
                 } catch (e: IOException) {
 
                 }
 
                 withContext(Main) {
                     binding.progressBar.visibility = View.INVISIBLE
-                    binding.text.text = imageString
-                    binding.copyButton.visibility = View.VISIBLE
-                    binding.encodeButton.visibility = View.INVISIBLE
+//                    binding.text.text = imageString
+                    copyToClipBoard()
                 }
 
             }
         }
 
+    }
+
+    fun copyToClipBoard(){
+        val clipBoard =
+            activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("image", imageString)
+        clipBoard.setPrimaryClip(clipData)
+        Toast.makeText(requireContext(), "copied", Toast.LENGTH_SHORT).show()
     }
 
 }
