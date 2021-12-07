@@ -11,15 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.riadsafowan.pixt.databinding.FragmentSecondBinding
 import android.graphics.BitmapFactory
 
-import android.graphics.Bitmap
 import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 
-
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
 class SecondFragment : Fragment() {
 
     private var _binding: FragmentSecondBinding? = null
@@ -45,10 +39,13 @@ class SecondFragment : Fragment() {
 
         binding.btnSee.setOnClickListener {
 
-            var clipboard =
+            val clipboard =
                 activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val item = clipboard.primaryClip?.getItemAt(0)?.text
             binding.editText.setText(item)
+
+//            val clipData = ClipData.newPlainText("image", null)
+//            clipboard.setPrimaryClip(clipData)
 
             val imageBytes = Base64.decode(binding.editText.text.toString(), Base64.DEFAULT)
             val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
