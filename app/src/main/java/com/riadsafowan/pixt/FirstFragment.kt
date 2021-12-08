@@ -18,6 +18,7 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Base64
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -95,8 +96,18 @@ class FirstFragment : Fragment() {
                 try {
                     val bitmap =
                         MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
+
+                    val size = bitmap.height * bitmap.width
+
+                    val quality = ((1000 * 1000 / size.toDouble()) * 100).toInt()
                     val baos = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+
+                    bitmap.compress(
+                        Bitmap.CompressFormat.JPEG,
+                        if (quality <= 100) quality else 100,
+                        baos
+                    )
+
                     val byteArray = baos.toByteArray()
                     imageString = Base64.encodeToString(byteArray, Base64.DEFAULT)
                 } catch (e: IOException) {
@@ -114,7 +125,7 @@ class FirstFragment : Fragment() {
 
     }
 
-    fun copyToClipBoard(){
+    fun copyToClipBoard() {
         val clipBoard =
             activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = ClipData.newPlainText("image", imageString)

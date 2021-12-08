@@ -41,8 +41,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
 
-
-
         <Button
             android:id="@+id/encodeAndCopy"
             android:layout_width="wrap_content"
