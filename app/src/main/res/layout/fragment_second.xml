@@ -26,6 +26,7 @@
             android:layout_height="60dp"
             android:padding="8dp"
             android:hint="Paste here.."
+            android:visibility="gone"
             android:paddingHorizontal="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="@string/previous"
+            android:text="encode"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -46,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="pixt"
+            android:text="paste and decode"
             app:layout_constraintBottom_toTopOf="@+id/button_second"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
