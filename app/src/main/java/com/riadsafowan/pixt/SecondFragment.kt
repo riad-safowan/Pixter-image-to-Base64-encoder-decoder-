@@ -1,5 +1,6 @@
 package com.riadsafowan.pixt
 
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
@@ -12,6 +13,18 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import android.provider.MediaStore
+
+import android.graphics.Bitmap
+
+import android.os.Environment
+import android.provider.Settings
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class SecondFragment : Fragment() {
 
@@ -33,26 +46,58 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.outputString.observe(viewLifecycleOwner){
+        viewModel.outputString.observe(viewLifecycleOwner) {
             val imageBytes = Base64.decode(it, Base64.DEFAULT)
             val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
             binding.imageView.setImageBitmap(decodedImage)
-            binding.btnDownload.visibility=View.VISIBLE
-            
+            binding.btnDownload.visibility = View.VISIBLE
+            viewModel.outputBitmap.value = decodedImage
         }
 
-        binding.btnSee.setOnClickListener {
+        binding.btnPaste.setOnClickListener {
             val clipboard =
                 activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             viewModel.outputString.value = clipboard.primaryClip?.getItemAt(0)?.text.toString()
+
 //            binding.editText.setText(item)
-//            val clipData = ClipData.newPlainText("image", null)
-//            clipboard.setPrimaryClip(clipData)
+            val clipData = ClipData.newPlainText("image", null)
+            clipboard.setPrimaryClip(clipData)
         }
-        
+
         binding.btnDownload.setOnClickListener {
-            Toast.makeText(requireContext(), "Download started", Toast.LENGTH_SHORT).show()
+            saveToLocal()
         }
+    }
+
+    private fun saveToLocal() {
+        val folderPath = Environment.getExternalStorageDirectory().toString() + "/DCIM/Pixt/"
+        val folder = File(folderPath)
+        if (!folder.exists()) {
+            File(folderPath).mkdirs()
+        }
+        val name = SimpleDateFormat("yyyyMMdd_HHmmss").format(System.currentTimeMillis())
+        val fOut: OutputStream?
+        val file = File(folder, "Pixt_$name.jpg")
+
+        try {
+            fOut = FileOutputStream(file)
+
+            val pictureBitmap: Bitmap = viewModel.outputBitmap.value!! // obtaining the Bitmap
+            pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
+
+            fOut.flush()
+            fOut.close()
+            Toast.makeText(requireContext(), "Saved to local", Toast.LENGTH_SHORT).show()
+
+        } catch (e: Exception) {
+            e.printStackTrace();
+        }
+//        MediaStore.Images.Media.insertImage(
+//            activity?.contentResolver,
+//            file.absolutePath,
+//            file.name,
+//            file.name
+//        ) //directly save to Pictures folder
     }
 
     override fun onDestroyView() {

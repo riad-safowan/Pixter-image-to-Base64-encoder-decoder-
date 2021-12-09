@@ -16,6 +16,7 @@ class MainViewModel : ViewModel() {
     val inputBitmap: MutableLiveData<Bitmap> = MutableLiveData()
     val inputString: MutableLiveData<String> = MutableLiveData()
     val outputString: MutableLiveData<String> = MutableLiveData()
+    val outputBitmap: MutableLiveData<Bitmap> = MutableLiveData()
 
     fun generateString() {
         viewModelScope.launch(Dispatchers.IO) {
