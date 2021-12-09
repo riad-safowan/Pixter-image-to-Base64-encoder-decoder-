@@ -7,16 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.riadsafowan.pixt.databinding.FragmentSecondBinding
 import android.graphics.BitmapFactory
-
 import android.util.Base64
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 
 class SecondFragment : Fragment() {
 
     private var _binding: FragmentSecondBinding? = null
+    private val viewModel: MainViewModel by activityViewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -26,33 +26,32 @@ class SecondFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
-
-        (activity as AppCompatActivity).supportActionBar?.title = "Text To Image"
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnSee.setOnClickListener {
-
-            val clipboard =
-                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val item = clipboard.primaryClip?.getItemAt(0)?.text
-//            binding.editText.setText(item)
-
-//            val clipData = ClipData.newPlainText("image", null)
-//            clipboard.setPrimaryClip(clipData)
-
-            val imageBytes = Base64.decode(item.toString(), Base64.DEFAULT)
+        viewModel.outputString.observe(viewLifecycleOwner){
+            val imageBytes = Base64.decode(it, Base64.DEFAULT)
             val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
             binding.imageView.setImageBitmap(decodedImage)
+            binding.btnDownload.visibility=View.VISIBLE
+            
         }
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+
+        binding.btnSee.setOnClickListener {
+            val clipboard =
+                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            viewModel.outputString.value = clipboard.primaryClip?.getItemAt(0)?.text.toString()
+//            binding.editText.setText(item)
+//            val clipData = ClipData.newPlainText("image", null)
+//            clipboard.setPrimaryClip(clipData)
+        }
+        
+        binding.btnDownload.setOnClickListener {
+            Toast.makeText(requireContext(), "Download started", Toast.LENGTH_SHORT).show()
         }
     }
 

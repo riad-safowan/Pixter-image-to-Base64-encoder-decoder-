@@ -8,67 +8,60 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.riadsafowan.pixt.databinding.FragmentFirstBinding
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.graphics.Bitmap
-import android.os.Build
 import android.provider.MediaStore
-import android.util.Base64
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Default
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.apache.commons.io.output.ByteArrayOutputStream
-import java.io.IOException
+import androidx.fragment.app.activityViewModels
 
 
 class FirstFragment : Fragment() {
     private var _binding: FragmentFirstBinding? = null
-    private lateinit var imageString: String
-    private lateinit var imageUri: Uri
-
     private val binding get() = _binding!!
+    private val viewModel: MainViewModel by activityViewModels()
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                viewModel.inputURI.value = data?.data!!
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
-
-        (activity as AppCompatActivity).supportActionBar?.title = "Image To Text"
-
         binding.encodeAndCopy.visibility = View.INVISIBLE
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+    //    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observer()
+        listener()
+    }
 
-        val resultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
+    private fun observer() {
+        viewModel.inputURI.observe(viewLifecycleOwner) { imageUri ->
+            Glide.with(requireContext())
+                .load(imageUri)
+                .into(binding.imageView)
+            binding.encodeAndCopy.visibility = View.VISIBLE
+        }
+        viewModel.inputString.observe(viewLifecycleOwner) {
+            binding.progressBar.visibility = View.INVISIBLE
+//                    binding.text.text = imageString
+            copyToClipBoard()
+        }
+    }
 
-                    val data: Intent? = result.data
-                    imageUri = data?.data!!
-
-                    Glide.with(requireContext())
-                        .load(imageUri)
-                        .into(binding.imageView)
-                    binding.encodeAndCopy.visibility = View.VISIBLE
-                }
-            }
-
+    private fun listener() {
         binding.addImage.setOnClickListener {
 
 //            val galleryIntent = Intent(Intent.ACTION_PICK,  MediaStore.Images.Media.EXTERNAL_CONTENT_URI) //direct native gallery
@@ -81,54 +74,22 @@ class FirstFragment : Fragment() {
             galleryIntent.type = "image/*"
             resultLauncher.launch(galleryIntent)
         }
-        binding.next.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
 
         binding.encodeAndCopy.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
-            CoroutineScope(Default).launch {
-
-//                takes a lot of time and doesn't compress
-//                val byteArray = activity?.contentResolver?.openInputStream(imageUri)?.readBytes()
-//                imageString = Base64.encodeToString(byteArray, Base64.DEFAULT)
-
-                try {
-                    val bitmap =
-                        MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
-
-                    val size = bitmap.height * bitmap.width
-
-                    val quality = ((1000 * 1000 / size.toDouble()) * 100).toInt()
-                    val baos = ByteArrayOutputStream()
-
-                    bitmap.compress(
-                        Bitmap.CompressFormat.JPEG,
-                        if (quality <= 100) quality else 100,
-                        baos
-                    )
-
-                    val byteArray = baos.toByteArray()
-                    imageString = Base64.encodeToString(byteArray, Base64.DEFAULT)
-                } catch (e: IOException) {
-
-                }
-
-                withContext(Main) {
-                    binding.progressBar.visibility = View.INVISIBLE
-//                    binding.text.text = imageString
-                    copyToClipBoard()
-                }
-
-            }
+            viewModel.inputBitmap.value =
+                MediaStore.Images.Media.getBitmap(
+                    activity?.contentResolver,
+                    viewModel.inputURI.value
+                )
+            viewModel.generateString()
         }
-
     }
 
-    fun copyToClipBoard() {
+    private fun copyToClipBoard() {
         val clipBoard =
             activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = ClipData.newPlainText("image", imageString)
+        val clipData = ClipData.newPlainText("image", viewModel.inputString.value)
         clipBoard.setPrimaryClip(clipData)
         Toast.makeText(requireContext(), "copied", Toast.LENGTH_SHORT).show()
     }
