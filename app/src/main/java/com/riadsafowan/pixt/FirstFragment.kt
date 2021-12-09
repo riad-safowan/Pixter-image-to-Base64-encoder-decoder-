@@ -63,7 +63,6 @@ class FirstFragment : Fragment() {
 
     private fun listener() {
         binding.addImage.setOnClickListener {
-
 //            val galleryIntent = Intent(Intent.ACTION_PICK,  MediaStore.Images.Media.EXTERNAL_CONTENT_URI) //direct native gallery
 
 //            val galleryIntent = Intent(Intent.ACTION_PICK)
@@ -74,7 +73,6 @@ class FirstFragment : Fragment() {
             galleryIntent.type = "image/*"
             resultLauncher.launch(galleryIntent)
         }
-
         binding.encodeAndCopy.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
             viewModel.inputBitmap.value =
