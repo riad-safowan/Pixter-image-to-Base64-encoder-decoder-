@@ -36,7 +36,7 @@ class SecondFragment : Fragment() {
 //        val clipData = ClipData.newPlainText("image", null)
 //        clipboard.setPrimaryClip(clipData)
     }
-    val requestPermissionLauncher =
+    private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -46,6 +46,8 @@ class SecondFragment : Fragment() {
                     "Permission is required to download this image",
                     Toast.LENGTH_SHORT
                 ).show()
+            } else {
+                saveToLocal()
             }
         }
     var lastClickTime: Long = 0
