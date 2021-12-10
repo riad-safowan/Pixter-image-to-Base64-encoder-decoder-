@@ -2,7 +2,6 @@ package com.riadsafowan.pixt
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,11 +13,9 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.provider.MediaStore
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
-import com.bumptech.glide.load.resource.drawable.DrawableResource
 
 
 class FirstFragment : Fragment() {
