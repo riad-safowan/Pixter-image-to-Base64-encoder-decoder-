@@ -2,6 +2,7 @@ package com.riadsafowan.pixter
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.pm.PackageManager
@@ -25,18 +26,18 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
+import kotlin.math.log
 
 
 class SecondFragment : Fragment() {
     private var _binding: FragmentSecondBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by activityViewModels()
+    private lateinit var clipboard: ClipboardManager
     private val pasteClickLister = View.OnClickListener {
-        val clipboard =
+        clipboard =
             activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         viewModel.outputString.value = clipboard.primaryClip?.getItemAt(0)?.text.toString()
-//        val clipData = ClipData.newPlainText("image", null)
-//        clipboard.setPrimaryClip(clipData)
     }
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -52,30 +53,40 @@ class SecondFragment : Fragment() {
                 saveToLocal()
             }
         }
-    var lastClickTime: Long = 0
+    private var lastClickTime: Long = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        binding.btnPaste.visibility = View.VISIBLE
+        binding.tvPaste.visibility = View.GONE
+        binding.btnDownload.visibility = View.GONE
+        binding.clean.visibility = View.GONE
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.outputString.observe(viewLifecycleOwner) {
-            try {
-                val imageBytes = Base64.decode(it, Base64.DEFAULT)
-                val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-//            binding.imageView.setImageBitmap(decodedImage)
-                binding.imageView.setImage(ImageSource.bitmap(decodedImage))
-                binding.btnPaste.visibility = View.GONE
-                binding.btnDownload.visibility = View.VISIBLE
-                binding.tvPaste.visibility = View.VISIBLE
-                viewModel.outputBitmap.value = decodedImage
-            }catch (e: Exception){
-                Toast.makeText(requireContext(), "Invalid text pasted", Toast.LENGTH_SHORT).show()
+            if (it.toString().isNotEmpty()) {
+                try {
+                    val imageBytes = Base64.decode(it, Base64.DEFAULT)
+                    val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                    binding.imageView.setImage(ImageSource.bitmap(decodedImage))
+                    binding.btnPaste.visibility = View.GONE
+                    binding.btnDownload.visibility = View.VISIBLE
+                    binding.tvPaste.visibility = View.VISIBLE
+                    binding.clean.visibility = View.VISIBLE
+                    viewModel.outputBitmap.value = decodedImage
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), "Invalid text pasted", Toast.LENGTH_SHORT)
+                        .show()
+                    binding.clean.visibility = View.VISIBLE
+                }
             }
         }
         binding.btnPaste.setOnClickListener(pasteClickLister)
@@ -86,6 +97,11 @@ class SecondFragment : Fragment() {
             }
             saveToLocal()
             lastClickTime = System.currentTimeMillis()
+        }
+        binding.clean.setOnClickListener {
+            val clipData = ClipData.newPlainText("image", "")
+            clipboard.setPrimaryClip(clipData)
+            binding.clean.visibility = View.GONE
         }
     }
 

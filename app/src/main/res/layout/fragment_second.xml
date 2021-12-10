@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="45dp"
             android:text="paste"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -60,7 +60,7 @@
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="45dp"
             android:text="download"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -73,11 +73,22 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="14dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:paddingVertical="6dp"
             app:layout_constraintBottom_toBottomOf="@+id/btnDownload"
             app:layout_constraintEnd_toStartOf="@+id/btnDownload"
             app:layout_constraintTop_toTopOf="@+id/btnDownload" />
+
+        <TextView
+            android:id="@+id/clean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Clean clipboard"
+            android:paddingVertical="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
