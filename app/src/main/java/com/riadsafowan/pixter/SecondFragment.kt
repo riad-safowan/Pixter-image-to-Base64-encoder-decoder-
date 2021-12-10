@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import android.graphics.Bitmap
 import android.os.Environment
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.davemorrissey.labs.subscaleview.ImageSource
@@ -64,14 +65,18 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.outputString.observe(viewLifecycleOwner) {
-            val imageBytes = Base64.decode(it, Base64.DEFAULT)
-            val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            try {
+                val imageBytes = Base64.decode(it, Base64.DEFAULT)
+                val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 //            binding.imageView.setImageBitmap(decodedImage)
-            binding.imageView.setImage(ImageSource.bitmap(decodedImage))
-            binding.btnPaste.visibility = View.GONE
-            binding.btnDownload.visibility = View.VISIBLE
-            binding.tvPaste.visibility = View.VISIBLE
-            viewModel.outputBitmap.value = decodedImage
+                binding.imageView.setImage(ImageSource.bitmap(decodedImage))
+                binding.btnPaste.visibility = View.GONE
+                binding.btnDownload.visibility = View.VISIBLE
+                binding.tvPaste.visibility = View.VISIBLE
+                viewModel.outputBitmap.value = decodedImage
+            }catch (e: Exception){
+                Toast.makeText(requireContext(), "Invalid text pasted", Toast.LENGTH_SHORT).show()
+            }
         }
         binding.btnPaste.setOnClickListener(pasteClickLister)
         binding.tvPaste.setOnClickListener(pasteClickLister)

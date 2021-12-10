@@ -3,6 +3,7 @@ package com.riadsafowan.pixter
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Base64
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -44,10 +44,10 @@ class FirstFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
-        binding.addImage.visibility= View.VISIBLE
+        binding.addImage.visibility = View.VISIBLE
         binding.encodeAndCopy.visibility = View.GONE
         binding.tvAddImage.visibility = View.GONE
 //        binding.imageView.scaleType = ImageView.ScaleType.CENTER_CROP
