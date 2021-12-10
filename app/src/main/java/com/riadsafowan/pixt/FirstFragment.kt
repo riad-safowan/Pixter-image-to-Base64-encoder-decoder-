@@ -14,9 +14,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.provider.MediaStore
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.load.resource.drawable.DrawableResource
 
 
 class FirstFragment : Fragment() {
@@ -48,8 +50,11 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        binding.addImage.visibility= View.VISIBLE
         binding.encodeAndCopy.visibility = View.GONE
         binding.tvAddImage.visibility = View.GONE
+//        binding.imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+        binding.imageView.setImageResource(R.drawable.logo_black_n_white)
         return binding.root
     }
 
@@ -95,7 +100,7 @@ class FirstFragment : Fragment() {
             activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = ClipData.newPlainText("image", viewModel.inputString.value)
         clipBoard.setPrimaryClip(clipData)
-        Toast.makeText(requireContext(), "copied", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Copied as Text", Toast.LENGTH_SHORT).show()
     }
 
 }
