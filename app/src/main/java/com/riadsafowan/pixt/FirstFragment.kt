@@ -30,6 +30,18 @@ class FirstFragment : Fragment() {
                 viewModel.inputURI.value = data?.data!!
             }
         }
+    private val copyClickListener = View.OnClickListener {
+
+//            val galleryIntent = Intent(Intent.ACTION_PICK,  MediaStore.Images.Media.EXTERNAL_CONTENT_URI) //direct native gallery
+
+//            val galleryIntent = Intent(Intent.ACTION_PICK)
+//            galleryIntent.type = "image/*" // native photo , google photo
+
+        // recent file with all folder access
+        val galleryIntent = Intent(Intent.ACTION_GET_CONTENT)
+        galleryIntent.type = "image/*"
+        resultLauncher.launch(galleryIntent)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,22 +77,8 @@ class FirstFragment : Fragment() {
     }
 
     private fun listener() {
-        binding.addImage.setOnClickListener {
-//            val galleryIntent = Intent(Intent.ACTION_PICK,  MediaStore.Images.Media.EXTERNAL_CONTENT_URI) //direct native gallery
-
-//            val galleryIntent = Intent(Intent.ACTION_PICK)
-//            galleryIntent.type = "image/*" // native photo , google photo
-
-            // recent file with all folder access
-            val galleryIntent = Intent(Intent.ACTION_GET_CONTENT)
-            galleryIntent.type = "image/*"
-            resultLauncher.launch(galleryIntent)
-        }
-        binding.tvAddImage.setOnClickListener {
-            val galleryIntent = Intent(Intent.ACTION_GET_CONTENT)
-            galleryIntent.type = "image/*"
-            resultLauncher.launch(galleryIntent)
-        }
+        binding.addImage.setOnClickListener(copyClickListener)
+        binding.tvAddImage.setOnClickListener(copyClickListener)
         binding.encodeAndCopy.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
             viewModel.inputBitmap.value =

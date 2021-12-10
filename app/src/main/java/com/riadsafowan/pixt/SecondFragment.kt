@@ -25,6 +25,13 @@ class SecondFragment : Fragment() {
     private var _binding: FragmentSecondBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by activityViewModels()
+    private val pasteClickLister = View.OnClickListener {
+        val clipboard =
+            activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        viewModel.outputString.value = clipboard.primaryClip?.getItemAt(0)?.text.toString()
+//        val clipData = ClipData.newPlainText("image", null)
+//        clipboard.setPrimaryClip(clipData)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,14 +52,8 @@ class SecondFragment : Fragment() {
             binding.tvPaste.visibility = View.VISIBLE
             viewModel.outputBitmap.value = decodedImage
         }
-        binding.btnPaste.setOnClickListener {
-            val clipboard =
-                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            viewModel.outputString.value = clipboard.primaryClip?.getItemAt(0)?.text.toString()
-//            binding.editText.setText(item)
-            val clipData = ClipData.newPlainText("image", null)
-            clipboard.setPrimaryClip(clipData)
-        }
+        binding.btnPaste.setOnClickListener(pasteClickLister)
+        binding.tvPaste.setOnClickListener(pasteClickLister)
         binding.btnDownload.setOnClickListener {
             saveToLocal()
         }
