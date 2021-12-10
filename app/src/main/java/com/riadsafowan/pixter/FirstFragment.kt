@@ -1,4 +1,4 @@
-package com.riadsafowan.pixt
+package com.riadsafowan.pixter
 
 import android.app.Activity
 import android.content.Intent
@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.riadsafowan.pixt.databinding.FragmentFirstBinding
+import com.riadsafowan.pixter.databinding.FragmentFirstBinding
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context

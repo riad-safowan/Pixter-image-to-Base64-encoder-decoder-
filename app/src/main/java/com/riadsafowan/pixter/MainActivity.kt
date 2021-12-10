@@ -1,9 +1,9 @@
-package com.riadsafowan.pixt
+package com.riadsafowan.pixter
 
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.riadsafowan.pixt.databinding.ActivityMainBinding
+import com.riadsafowan.pixter.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

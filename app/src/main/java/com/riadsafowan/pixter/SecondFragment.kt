@@ -1,4 +1,4 @@
-package com.riadsafowan.pixt
+package com.riadsafowan.pixter
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.riadsafowan.pixt.databinding.FragmentSecondBinding
+import com.riadsafowan.pixter.databinding.FragmentSecondBinding
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.widget.Toast

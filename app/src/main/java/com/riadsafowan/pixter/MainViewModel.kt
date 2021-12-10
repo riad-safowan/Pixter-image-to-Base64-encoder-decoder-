@@ -1,4 +1,4 @@
-package com.riadsafowan.pixt
+package com.riadsafowan.pixter
 
 import android.graphics.Bitmap
 import android.net.Uri

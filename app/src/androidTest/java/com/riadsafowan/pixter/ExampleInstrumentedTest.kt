@@ -1,4 +1,4 @@
-package com.riadsafowan.pixt
+package com.riadsafowan.pixter
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,4 +1,4 @@
-package com.riadsafowan.pixt;
+package com.riadsafowan.pixter;
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
