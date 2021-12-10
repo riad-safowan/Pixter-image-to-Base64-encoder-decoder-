@@ -37,7 +37,9 @@ class SecondFragment : Fragment() {
     private val pasteClickLister = View.OnClickListener {
         clipboard =
             activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        viewModel.outputString.value = clipboard.primaryClip?.getItemAt(0)?.text.toString()
+        val text = clipboard.primaryClip?.getItemAt(0)?.text.toString()
+        if (viewModel.outputString.value != text) viewModel.outputString.value = text
+
     }
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -82,12 +84,13 @@ class SecondFragment : Fragment() {
                     binding.tvPaste.visibility = View.VISIBLE
                     binding.clean.visibility = View.VISIBLE
                     viewModel.outputBitmap.value = decodedImage
+                    viewModel.isDownloaded = false
                 } catch (e: Exception) {
                     Toast.makeText(requireContext(), "Invalid text pasted", Toast.LENGTH_SHORT)
                         .show()
                     binding.clean.visibility = View.VISIBLE
                 }
-            }
+            } else Toast.makeText(requireContext(), "Clipboard empty", Toast.LENGTH_SHORT).show()
         }
         binding.btnPaste.setOnClickListener(pasteClickLister)
         binding.tvPaste.setOnClickListener(pasteClickLister)
@@ -107,6 +110,10 @@ class SecondFragment : Fragment() {
 
     @SuppressLint("SimpleDateFormat")
     private fun saveToLocal() {
+        if (viewModel.isDownloaded == true) {
+            Toast.makeText(requireContext(), "Already saved", Toast.LENGTH_SHORT).show()
+            return
+        }
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -131,9 +138,10 @@ class SecondFragment : Fragment() {
             pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
             fOut.flush()
             fOut.close()
+            viewModel.isDownloaded = true
             Toast.makeText(requireContext(), "Saved to local", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
-            e.printStackTrace();
+            e.printStackTrace()
         }
 //        MediaStore.Images.Media.insertImage(
 //            activity?.contentResolver,

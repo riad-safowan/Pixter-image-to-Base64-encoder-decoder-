@@ -24,11 +24,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:paddingVertical="6dp"
             android:text="CHOOSE PHOTO"
-            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="14dp"
-            android:paddingVertical="6dp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/encodeAndCopy"
             app:layout_constraintEnd_toStartOf="@+id/encodeAndCopy"
             app:layout_constraintTop_toTopOf="@+id/encodeAndCopy" />
@@ -37,8 +37,8 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
             android:layout_marginBottom="130dp"
+            android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,10 +59,10 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/encodeAndCopy"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toTopOf="@id/imageView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

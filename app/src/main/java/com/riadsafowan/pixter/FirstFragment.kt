@@ -49,6 +49,7 @@ class FirstFragment : Fragment() {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         binding.addImage.visibility = View.VISIBLE
         binding.encodeAndCopy.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
         binding.tvAddImage.visibility = View.GONE
 //        binding.imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         binding.imageView.setImageResource(R.drawable.logo_black_n_white)

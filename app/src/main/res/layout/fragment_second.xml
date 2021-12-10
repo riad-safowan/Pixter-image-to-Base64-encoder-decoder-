@@ -9,17 +9,17 @@
         tools:context=".SecondFragment">
 
 
-<!--        <ImageView-->
-<!--            android:id="@+id/imageView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:adjustViewBounds="true"-->
-<!--            android:maxHeight="500dp"-->
-<!--            android:scaleType="fitCenter"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:src="@tools:sample/avatars" />-->
+        <!--        <ImageView-->
+        <!--            android:id="@+id/imageView"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:adjustViewBounds="true"-->
+        <!--            android:maxHeight="500dp"-->
+        <!--            android:scaleType="fitCenter"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            tools:src="@tools:sample/avatars" />-->
 
         <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
             android:id="@+id/imageView"
@@ -69,12 +69,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:paddingVertical="6dp"
             android:text="PASTE"
-            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="14dp"
+            android:textStyle="bold"
             android:visibility="visible"
-            android:paddingVertical="6dp"
             app:layout_constraintBottom_toBottomOf="@+id/btnDownload"
             app:layout_constraintEnd_toStartOf="@+id/btnDownload"
             app:layout_constraintTop_toTopOf="@+id/btnDownload" />
@@ -83,12 +83,12 @@
             android:id="@+id/clean"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="Clean clipboard"
             android:paddingVertical="5dp"
+            android:text="Clean clipboard"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPaste" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
