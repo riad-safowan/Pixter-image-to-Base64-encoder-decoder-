@@ -36,7 +36,8 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
-        binding.encodeAndCopy.visibility = View.INVISIBLE
+        binding.encodeAndCopy.visibility = View.GONE
+        binding.tvAddImage.visibility = View.GONE
         return binding.root
     }
 
@@ -53,6 +54,8 @@ class FirstFragment : Fragment() {
                 .load(imageUri)
                 .into(binding.imageView)
             binding.encodeAndCopy.visibility = View.VISIBLE
+            binding.addImage.visibility = View.GONE
+            binding.tvAddImage.visibility = View.VISIBLE
         }
         viewModel.inputString.observe(viewLifecycleOwner) {
             binding.progressBar.visibility = View.INVISIBLE
@@ -69,6 +72,11 @@ class FirstFragment : Fragment() {
 //            galleryIntent.type = "image/*" // native photo , google photo
 
             // recent file with all folder access
+            val galleryIntent = Intent(Intent.ACTION_GET_CONTENT)
+            galleryIntent.type = "image/*"
+            resultLauncher.launch(galleryIntent)
+        }
+        binding.tvAddImage.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_GET_CONTENT)
             galleryIntent.type = "image/*"
             resultLauncher.launch(galleryIntent)

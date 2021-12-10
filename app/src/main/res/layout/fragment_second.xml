@@ -13,8 +13,8 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="500dp"
             android:adjustViewBounds="true"
+            android:maxHeight="500dp"
             android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,10 +25,10 @@
             android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:padding="8dp"
             android:hint="Paste here.."
-            android:visibility="gone"
+            android:padding="8dp"
             android:paddingHorizontal="16dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -37,8 +37,9 @@
             android:id="@+id/btnPaste"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="paste"
             android:layout_marginBottom="50dp"
+            android:text="paste"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -47,10 +48,26 @@
             android:id="@+id/btnDownload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="50dp"
             android:text="download"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/btnPaste"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tvPaste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="PASTE AGAIN"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            android:visibility="gone"
+            android:paddingVertical="6dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnDownload"
+            app:layout_constraintEnd_toStartOf="@+id/btnDownload"
+            app:layout_constraintTop_toTopOf="@+id/btnDownload" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

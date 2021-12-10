@@ -40,7 +40,9 @@ class SecondFragment : Fragment() {
             val imageBytes = Base64.decode(it, Base64.DEFAULT)
             val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
             binding.imageView.setImageBitmap(decodedImage)
+            binding.btnPaste.visibility = View.GONE
             binding.btnDownload.visibility = View.VISIBLE
+            binding.tvPaste.visibility = View.VISIBLE
             viewModel.outputBitmap.value = decodedImage
         }
         binding.btnPaste.setOnClickListener {

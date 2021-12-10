@@ -14,11 +14,24 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
             android:text="select picture"
-            app:layout_constraintVertical_bias=".7"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintVertical_bias=".7" />
+
+        <TextView
+            android:id="@+id/tvAddImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="CHOOSE ANOTHER"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            android:paddingVertical="6dp"
+            app:layout_constraintBottom_toBottomOf="@+id/encodeAndCopy"
+            app:layout_constraintEnd_toStartOf="@+id/encodeAndCopy"
+            app:layout_constraintTop_toTopOf="@+id/encodeAndCopy" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -36,10 +49,11 @@
             android:id="@+id/encodeAndCopy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="56dp"
             android:text="copy"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addImage" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"
