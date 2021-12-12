@@ -13,12 +13,17 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 
 
 class FirstFragment : Fragment() {
+    companion object {
+        const val TAG = "logger"
+    }
+
     private var _binding: FragmentFirstBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by activityViewModels()
@@ -73,8 +78,9 @@ class FirstFragment : Fragment() {
             binding.tvAddImage.visibility = View.VISIBLE
         }
         viewModel.inputString.observe(viewLifecycleOwner) {
-            binding.progressBar.visibility = View.INVISIBLE
+            binding.progressBar.visibility = View.GONE
 //                    binding.text.text = imageString
+            Log.d(TAG, "string size: " + it.toString().length)
             copyToClipBoard()
         }
     }
